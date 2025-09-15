@@ -58,6 +58,16 @@ def draw_overlays(frame, ellipse_data, screen_center_x, screen_center_y, is_manu
     cv2.circle(frame, (x, y), 2, COLOR_RED, 3)
     cv2.circle(frame, (screen_center_x, screen_center_y), 5, COLOR_BLUE, -1)
 
+    # Draw major and minor axes
+    angle_rad = np.deg2rad(angle)
+    major_axis_p1 = (int(x + 0.5 * MA/2 * np.cos(angle_rad)), int(y + 0.5 * MA/2 * np.sin(angle_rad)))
+    major_axis_p2 = (int(x - 0.5 * MA/2 * np.cos(angle_rad)), int(y - 0.5 * MA/2 * np.sin(angle_rad)))
+    cv2.line(frame, major_axis_p1, major_axis_p2, COLOR_RED, 2)
+
+    minor_axis_p1 = (int(x - 0.5 * ma/2 * np.sin(angle_rad)), int(y + 0.5 * ma/2 * np.cos(angle_rad)))
+    minor_axis_p2 = (int(x + 0.5 * ma/2 * np.sin(angle_rad)), int(y - 0.5 * ma/2 * np.cos(angle_rad)))
+    cv2.line(frame, minor_axis_p1, minor_axis_p2, COLOR_BLUE, 2)
+
     text_diff = f"Diff X: {ellipse_data['diff_x_mm']:.2f}mm, Y: {ellipse_data['diff_y_mm']:.2f}mm"
     text_dist = f"Distance: {ellipse_data['distance_mm']:.2f}mm"
     text_axes = f"Axes: {MA}px, {ma}px"
